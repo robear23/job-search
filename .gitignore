@@ -1,0 +1,8 @@
+# Never let the scraper's working files reach this repo. The parent directory
+# holds live session cookies, a personal CV and the jobs database; only the
+# generated page belongs here.
+*.db
+*.pdf
+*.log
+.linkedin_session.json
+.vercel
