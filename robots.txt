@@ -1,2 +1,24 @@
+# The report is deliberately kept out of search results, but its URL gets
+# shared on LinkedIn, and LinkedIn's crawler has to be able to read the page to
+# build a preview card. A blanket Disallow blocks that too, so the social
+# crawlers are named ahead of the wildcard — a crawler obeys the most specific
+# group that matches it and ignores the rest.
+#
+# Staying out of search does not depend on this file: it is handled by the
+# noindex meta tag on the page and the X-Robots-Tag header in vercel.json,
+# which work whether or not a crawler is allowed to fetch.
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
 User-agent: *
 Disallow: /
