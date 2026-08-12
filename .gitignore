@@ -6,3 +6,8 @@
 *.log
 .linkedin_session.json
 .vercel
+
+# Live store credentials, pulled here by `vercel install`. Broader than the
+# `.env*.local` the CLI writes, because a plain `.env` holds the same secrets
+# and this repository is public.
+.env*
