@@ -23,7 +23,18 @@ an open write endpoint on a public URL is worse than a broken one:
 | Variable | What it is |
 |---|---|
 | `MARK_TOKEN` | The password the page and the CLI send as a bearer token. Any string. |
-| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | An Upstash Redis, added through Vercel's marketplace integration, which sets both. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are accepted too, for a store connected directly. |
+| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | An Upstash Redis. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are accepted too, for a store connected directly. |
+
+The store is `upstash-kv-apricot-ocean`, provisioned from this directory with
+
+```
+vercel install upstash/upstash-kv
+```
+
+which installs the integration, connects it to the project and pulls the
+credentials in one step. **Storage is not under Project Settings** — that
+sidebar has no such entry and looking for it there is a dead end. In the
+dashboard it lives in the *team* sidebar, at `/[team]/~/stores`.
 
 The map only ever holds removals made since the last scour: `scour.py sync`
 takes them into the database, which bakes them into the next page, and then
