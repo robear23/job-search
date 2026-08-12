@@ -7,6 +7,33 @@ filtered and scored. Deployed from this repository by Vercel.
 so edits made here are lost on the next run. The generator lives in a separate
 private project, which is where any change belongs.
 
+`api/marks.js` is not generated and is edited here. It is the one writable thing
+in the deployment: the page cannot remember that you removed a posting, so it
+records that here instead.
+
+## The marks endpoint
+
+`GET /api/marks` returns `{"marks": {"<posting key>": "applied" | "dismissed"}}`.
+`POST` the same shape to change it, with `"open"` to clear an entry; either way
+the whole map comes back, so a caller reconciles in one round trip.
+
+It needs two things set on the Vercel project, and fails closed without them —
+an open write endpoint on a public URL is worse than a broken one:
+
+| Variable | What it is |
+|---|---|
+| `MARK_TOKEN` | The password the page and the CLI send as a bearer token. Any string. |
+| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | An Upstash Redis, added through Vercel's marketplace integration, which sets both. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are accepted too, for a store connected directly. |
+
+The map only ever holds removals made since the last scour: `scour.py sync`
+takes them into the database, which bakes them into the next page, and then
+clears the keys it read. Nothing else is stored, so there is no growth to
+manage and the free tier is never in sight.
+
+There is no `package.json` and no build step, deliberately. The endpoint talks
+to Upstash over plain HTTP with the runtime's own `fetch`, so `site/` stays a
+directory of static files with one function in it.
+
 ## Deploying
 
 **A push to `main` does not deploy.** The Vercel project reports the GitHub
